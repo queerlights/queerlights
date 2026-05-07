@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Queer Lights – Verification</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#000;color:#fff;font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center}
+.lang-switcher{position:fixed;top:20px;right:20px;display:flex;align-items:center;gap:2px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:3px;z-index:100}
+.lang-btn{padding:5px 12px;border-radius:16px;font-size:11px;font-weight:500;cursor:pointer;border:none;background:transparent;color:rgba(255,255,255,.5);font-family:'DM Sans',sans-serif;transition:all .2s}
+.lang-btn.active{background:linear-gradient(90deg,#ff0080,#a855f7);color:#fff}
+.age-gate{display:flex;flex-direction:column;align-items:center;padding:40px 28px;max-width:380px;width:100%;text-align:center}
+.age-title{font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:3px;background:linear-gradient(90deg,#6366f1,#00c8ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:24px}
+.age-text{font-size:15px;line-height:1.75;color:#e0e0e0;margin-bottom:28px;font-weight:300}
+.age-warning{background:#1a0a10;border:1px solid rgba(255,80,80,.35);border-radius:12px;padding:16px 18px;margin-bottom:32px;width:100%}
+.age-warning-title{color:#ff6060;font-size:13px;font-weight:500;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:6px}
+.age-warning-text{font-size:13px;color:#bbb;line-height:1.6}
+.age-btn{width:100%;padding:16px;border-radius:40px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;background:linear-gradient(90deg,#ff0080,#a855f7);color:#fff}
+
+.cookie-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;align-items:flex-end;justify-content:center}
+.cookie-overlay.show{display:flex}
+.cookie-panel{background:#0a0a0a;border-top:1px solid #222;border-radius:20px 20px 0 0;padding:32px 24px 36px;max-width:480px;width:100%}
+.cookie-logo{font-family:'Bebas Neue',sans-serif;font-size:28px;background:linear-gradient(90deg,#ff0080,#ff8c00,#ffe000,#00ff9d,#00c8ff,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:1px;line-height:1;margin-bottom:20px;display:block}
+.cookie-icon{font-size:28px;margin-bottom:12px;display:block}
+.cookie-title{font-size:20px;font-weight:500;margin-bottom:14px}
+.cookie-text{font-size:13px;color:#999;line-height:1.7;margin-bottom:24px}
+.cookie-btn-accept{width:100%;padding:14px;border-radius:40px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;background:linear-gradient(90deg,#ff0080,#a855f7);color:#fff}
+.cookie-btn-necessary{width:100%;padding:13px;border-radius:40px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;background:transparent;border:1.5px solid #00ff9d;color:#00ff9d}
+</style>
+</head>
+<body>
+
+<div class="lang-switcher">
+  <button class="lang-btn active" id="btn-en" onclick="setLang('en')">🇬🇧 EN</button>
+  <button class="lang-btn" id="btn-fr" onclick="setLang('fr')">🇫🇷 FR</button>
+</div>
+
+<div class="age-gate" id="ageGate">
+  <h1 class="age-title" id="age_title">VERIFICATION</h1>
+  <p class="age-text" id="age_text">This website contains adult content of an explicit nature. By entering, you confirm that you are 18+ years old and are not offended by viewing such material.</p>
+  <div class="age-warning">
+    <p class="age-warning-title">⚠ <span id="warning_title">WARNING: ADULT CONTENT</span></p>
+    <p class="age-warning-text" id="warning_text">If you are under 18 or if such material offends you, please exit now.</p>
+  </div>
+  <button class="age-btn" id="age_btn" onclick="confirmAge()">I AM 18+</button>
+</div>
+
+<div class="cookie-overlay" id="cookieOverlay">
+  <div class="cookie-panel">
+    <span class="cookie-logo">QUEER<br>LIGHTS</span>
+    <span class="cookie-icon">🍪</span>
+    <h2 class="cookie-title" id="cookie_title">Cookies & Privacy</h2>
+    <p class="cookie-text" id="cookie_text">We use essential cookies for the site to function and analytics cookies to improve your experience. By continuing, you accept our use of cookies in accordance with GDPR.</p>
+    <button class="cookie-btn-accept" id="accept_all" onclick="enterSite('all')">ACCEPT ALL</button>
+    <button class="cookie-btn-necessary" id="necessary_only" onclick="enterSite('necessary')">ESSENTIAL ONLY</button>
+  </div>
+</div>
+
+<script>
+var lang = localStorage.getItem('ql_lang') || 'en';
+
+var t = {
+  en: {
+    age_title:'VERIFICATION',
+    age_text:'This website contains adult content of an explicit nature. By entering, you confirm that you are 18+ years old and are not offended by viewing such material.',
+    warning_title:'WARNING: ADULT CONTENT',
+    warning_text:'If you are under 18 or if such material offends you, please exit now.',
+    age_btn:'I AM 18+',
+    cookie_title:'Cookies & Privacy',
+    cookie_text:'We use essential cookies for the site to function and analytics cookies to improve your experience. By continuing, you accept our use of cookies in accordance with GDPR.',
+    accept_all:'ACCEPT ALL',
+    necessary_only:'ESSENTIAL ONLY'
+  },
+  fr: {
+    age_title:'VÉRIFICATION',
+    age_text:'Ce site contient du contenu adulte à caractère explicite. En entrant, vous confirmez avoir 18 ans ou plus et ne pas être choqué par ce type de contenu.',
+    warning_title:'AVERTISSEMENT : CONTENU ADULTE',
+    warning_text:'Si vous avez moins de 18 ans ou si ce contenu vous offense, veuillez quitter maintenant.',
+    age_btn:'J\'AI 18 ANS ET PLUS',
+    cookie_title:'Cookies et Confidentialité',
+    cookie_text:'Nous utilisons des cookies essentiels pour le fonctionnement du site et des cookies analytiques pour améliorer votre expérience. En continuant, vous acceptez notre utilisation des cookies conformément au RGPD.',
+    accept_all:'ACCEPTER TOUT',
+    necessary_only:'NÉCESSAIRES UNIQUEMENT'
+  }
+};
+
+function setLang(l) {
+  lang = l;
+  localStorage.setItem('ql_lang', l);
+  document.getElementById('btn-en').classList.toggle('active', l==='en');
+  document.getElementById('btn-fr').classList.toggle('active', l==='fr');
+  var keys = ['age_title','age_text','warning_title','warning_text','age_btn','cookie_title','cookie_text','accept_all','necessary_only'];
+  keys.forEach(function(k){ 
+    var el = document.getElementById(k);
+    if(el) el.textContent = t[l][k];
+  });
+}
+
+function confirmAge() {
+  localStorage.setItem('ql_age', 'verified');
+  document.getElementById('ageGate').style.display = 'none';
+  document.getElementById('cookieOverlay').classList.add('show');
+}
+
+function enterSite(type) {
+  localStorage.setItem('ql_cookies', type);
+  window.location.href = 'home.html';
+}
+
+// Init
+setLang(lang);
+
+// If already verified before, skip straight to home
+if (localStorage.getItem('ql_age') === 'verified' && localStorage.getItem('ql_cookies')) {
+  window.location.href = 'home.html';
+}
+</script>
+</body>
+</html>
