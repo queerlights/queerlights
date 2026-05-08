@@ -314,7 +314,15 @@ function addToCart(name,price){cart.push({name,price});updateCartUI();showToast(
 function addStickers(){const t=30*stickerQty;cart.push({name:i18n[currentLang].pkg4_name+(stickerQty>1?' ×'+stickerQty:''),price:t});updateCartUI();showToast(i18n[currentLang].added);}
 function removeFromCart(i){cart.splice(i,1);updateCartUI();}
 function toggleCart(){document.getElementById('cartPanel').classList.toggle('open');document.getElementById('overlay').classList.toggle('open');}
-function checkout(m){showToast(m==='stripe'?'→ Stripe...':'→ PayPal...');setTimeout(()=>toggleCart(),1500);}
+function checkout(m){
+  if(m==='paypal'){
+    const total=cart.reduce((s,i)=>s+i.price,0);
+    window.open('https://paypal.me/kamion45/'+total+'EUR','_blank');
+    toggleCart();
+  } else {
+    showToast('→ Stripe coming soon...');
+  }
+}
 function submitForm(){
   const n=document.getElementById('fname').value.trim();
   const e=document.getElementById('femail').value.trim();
