@@ -619,7 +619,8 @@ function addToCart(item) {
 }
 
 function changeCartQty(idx, d) {
-  cart[idx].qty = Math.max(1, cart[idx].qty + d);
+  cart[idx].qty += d;
+  if (cart[idx].qty <= 0) cart.splice(idx, 1);
   saveCart();
   updateCartUI();
 }
