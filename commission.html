@@ -71,377 +71,7 @@ html{scroll-behavior:smooth}
 .ql-print-sub{font-size:12px;color:#888;line-height:1.6}
 
 /* Carousel */
-.ql-carousel-wrap{positio/* ========================================================
-   QUEER LIGHTS – Shared Cart System
-   Include on gallery.html & commission.html
-   ======================================================== */
-
-(function () {
-  'use strict';
-
-  let cart = JSON.parse(localStorage.getItem('ql_cart') || '[]');
-
-  function saveCart() {
-    localStorage.setItem('ql_cart', JSON.stringify(cart));
-  }
-
-  window.QLCart = {
-
-    add(item) {
-      // item = { id, title, price, img, type }
-      const existing = cart.find(c => c.id === item.id);
-      if (existing) {
-        existing.qty = (existing.qty || 1) + 1;
-      } else {
-        cart.push({ ...item, qty: 1 });
-      }
-      saveCart();
-      this.renderDrawer();
-      this.openDrawer();
-      this.updateBadge();
-    },
-
-    remove(id) {
-      cart = cart.filter(c => c.id !== id);
-      saveCart();
-      this.renderDrawer();
-      this.updateBadge();
-    },
-
-    updateQty(id, delta) {
-      const item = cart.find(c => c.id === id);
-      if (!item) return;
-      item.qty = Math.max(1, (item.qty || 1) + delta);
-      saveCart();
-      this.renderDrawer();
-      this.updateBadge();
-    },
-
-    total() {
-      return cart.reduce((s, c) => s + parseFloat(c.price) * (c.qty || 1), 0).toFixed(2);
-    },
-
-    count() {
-      return cart.reduce((s, c) => s + (c.qty || 1), 0);
-    },
-
-    openDrawer() {
-      document.getElementById('ql-cart-drawer')?.classList.add('open');
-      document.getElementById('ql-cart-overlay')?.classList.add('open');
-    },
-
-    closeDrawer() {
-      document.getElementById('ql-cart-drawer')?.classList.remove('open');
-      document.getElementById('ql-cart-overlay')?.classList.remove('open');
-    },
-
-    updateBadge() {
-      const n = this.count();
-      document.querySelectorAll('.ql-cart-badge').forEach(el => {
-        el.textContent = n;
-        el.style.display = n > 0 ? 'flex' : 'none';
-      });
-    },
-
-    renderDrawer() {
-      const list = document.getElementById('ql-cart-items');
-      const totalEl = document.getElementById('ql-cart-total');
-      if (!list) return;
-
-      if (cart.length === 0) {
-        list.innerHTML = `<p class="ql-cart-empty">Votre panier est vide.</p>`;
-      } else {
-        list.innerHTML = cart.map(c => `
-          <div class="ql-cart-item">
-            <img src="${c.img}" alt="${c.title}" class="ql-cart-thumb">
-            <div class="ql-cart-item-info">
-              <p class="ql-cart-item-title">${c.title}</p>
-              <p class="ql-cart-item-type">${c.type || ''}</p>
-              <div class="ql-cart-qty-row">
-                <button class="ql-qty-btn" onclick="QLCart.updateQty('${c.id}',-1)">&#8722;</button>
-                <span>${c.qty || 1}</span>
-                <button class="ql-qty-btn" onclick="QLCart.updateQty('${c.id}',1)">+</button>
-                <span class="ql-cart-item-price">&#8364;${(parseFloat(c.price) * (c.qty || 1)).toFixed(2)}</span>
-              </div>
-            </div>
-            <button class="ql-cart-remove" onclick="QLCart.remove('${c.id}')">&#215;</button>
-          </div>
-        `).join('');
-      }
-
-      if (totalEl) totalEl.textContent = '\u20AC' + this.total();
-    },
-
-    init() {
-      this.injectDrawer();
-      this.renderDrawer();
-      this.updateBadge();
-      // Wire up cart trigger buttons already in DOM
-      document.querySelectorAll('.cart-btn, .ql-cart-trigger').forEach(btn => {
-        btn.addEventListener('click', () => this.openDrawer());
-      });
-    },
-
-    injectDrawer() {
-      if (document.getElementById('ql-cart-drawer')) return;
-
-      const overlay = document.createElement('div');
-      overlay.id = 'ql-cart-overlay';
-      overlay.className = 'ql-cart-overlay';
-      overlay.onclick = () => this.closeDrawer();
-      document.body.appendChild(overlay);
-
-      const drawer = document.createElement('div');
-      drawer.id = 'ql-cart-drawer';
-      drawer.className = 'ql-cart-drawer';
-      drawer.innerHTML = `
-        <div class="ql-cart-header">
-          <h3>Mon Panier</h3>
-          <button class="ql-cart-close" onclick="QLCart.closeDrawer()">&#215;</button>
-        </div>
-        <div class="ql-cart-body">
-          <div id="ql-cart-items"></div>
-        </div>
-        <div class="ql-cart-footer">
-          <div class="ql-cart-footer-row">
-            <span>Total</span>
-            <span id="ql-cart-total">&#8364;0.00</span>
-          </div>
-          <button class="ql-cart-checkout" onclick="window.location='commission.html'">
-            Commander &#8594;
-          </button>
-        </div>
-      `;
-      document.body.appendChild(drawer);
-
-      this.injectStyles();
-    },
-
-    injectStyles() {
-      if (document.getElementById('ql-cart-styles')) return;
-      const style = document.createElement('style');
-      style.id = 'ql-cart-styles';
-      style.textContent = `
-        .ql-cart-overlay {
-          display: none;
-          position: fixed;
-          inset: 0;
-          background: rgba(0,0,0,.6);
-          z-index: 900;
-          backdrop-filter: blur(4px);
-        }
-        .ql-cart-overlay.open { display: block; }
-
-        .ql-cart-drawer {
-          position: fixed;
-          top: 0; right: 0;
-          width: min(420px, 100vw);
-          height: 100vh;
-          background: #0a0010;
-          border-left: 1px solid #1e1030;
-          z-index: 1000;
-          display: flex;
-          flex-direction: column;
-          transform: translateX(100%);
-          transition: transform .35s cubic-bezier(.4,0,.2,1);
-          box-shadow: -8px 0 40px rgba(168,85,247,.15);
-        }
-        .ql-cart-drawer.open { transform: translateX(0); }
-
-        .ql-cart-header {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 20px 24px;
-          border-bottom: 1px solid #1e1030;
-          flex-shrink: 0;
-        }
-        .ql-cart-header h3 {
-          font-family: 'Bebas Neue', sans-serif;
-          font-size: 22px;
-          letter-spacing: 2px;
-          background: linear-gradient(90deg,#ff0080,#a855f7);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          margin: 0;
-        }
-        .ql-cart-close {
-          background: none;
-          border: 1px solid #333;
-          color: #fff;
-          width: 32px; height: 32px;
-          border-radius: 50%;
-          font-size: 18px;
-          cursor: pointer;
-          display: flex; align-items: center; justify-content: center;
-          transition: border-color .2s, color .2s;
-          line-height: 1;
-        }
-        .ql-cart-close:hover { border-color: #ff0080; color: #ff0080; }
-
-        .ql-cart-body {
-          flex: 1;
-          overflow-y: auto;
-          padding: 8px 20px;
-        }
-        .ql-cart-body::-webkit-scrollbar { width: 4px; }
-        .ql-cart-body::-webkit-scrollbar-thumb { background: #2a1040; border-radius: 2px; }
-
-        .ql-cart-empty {
-          color: #555;
-          font-size: 13px;
-          text-align: center;
-          margin-top: 60px;
-          font-style: italic;
-          font-family: 'DM Sans', sans-serif;
-        }
-
-        .ql-cart-item {
-          display: flex;
-          gap: 14px;
-          align-items: flex-start;
-          padding: 14px 0;
-          border-bottom: 1px solid #150828;
-          position: relative;
-        }
-        .ql-cart-thumb {
-          width: 72px;
-          height: 72px;
-          object-fit: cover;
-          border-radius: 8px;
-          flex-shrink: 0;
-          border: 1px solid #2a1040;
-        }
-        .ql-cart-item-info {
-          flex: 1;
-          min-width: 0;
-          padding-right: 24px;
-        }
-        .ql-cart-item-title {
-          font-family: 'Bebas Neue', sans-serif;
-          font-size: 16px;
-          letter-spacing: .5px;
-          color: #fff;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          margin: 0 0 2px;
-        }
-        .ql-cart-item-type {
-          font-size: 10px;
-          color: #a855f7;
-          letter-spacing: 1px;
-          text-transform: uppercase;
-          margin: 0 0 8px;
-          font-family: 'DM Sans', sans-serif;
-        }
-        .ql-cart-qty-row {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          font-family: 'DM Sans', sans-serif;
-        }
-        .ql-qty-btn {
-          width: 24px; height: 24px;
-          border-radius: 50%;
-          border: 1px solid #333;
-          background: transparent;
-          color: #fff;
-          font-size: 14px;
-          cursor: pointer;
-          display: flex; align-items: center; justify-content: center;
-          transition: border-color .2s;
-          line-height: 1;
-        }
-        .ql-qty-btn:hover { border-color: #a855f7; }
-        .ql-cart-qty-row > span { font-size: 13px; color: #ccc; }
-        .ql-cart-item-price {
-          margin-left: auto;
-          color: #00ff9d !important;
-          font-size: 14px !important;
-          font-weight: 300;
-        }
-        .ql-cart-remove {
-          position: absolute;
-          top: 14px; right: 0;
-          background: none;
-          border: none;
-          color: #444;
-          font-size: 20px;
-          cursor: pointer;
-          line-height: 1;
-          transition: color .2s;
-          padding: 0;
-        }
-        .ql-cart-remove:hover { color: #ff0080; }
-
-        .ql-cart-footer {
-          padding: 20px 24px;
-          border-top: 1px solid #1e1030;
-          background: #0a0010;
-          flex-shrink: 0;
-        }
-        .ql-cart-footer-row {
-          display: flex;
-          justify-content: space-between;
-          align-items: baseline;
-          font-size: 13px;
-          color: #888;
-          margin-bottom: 16px;
-          font-family: 'DM Sans', sans-serif;
-        }
-        #ql-cart-total {
-          color: #00ff9d;
-          font-size: 22px;
-          font-weight: 300;
-        }
-        .ql-cart-checkout {
-          width: 100%;
-          padding: 14px;
-          border-radius: 30px;
-          border: none;
-          background: linear-gradient(90deg,#ff0080,#a855f7);
-          color: #fff;
-          font-family: 'Bebas Neue', sans-serif;
-          font-size: 16px;
-          letter-spacing: 2px;
-          cursor: pointer;
-          transition: opacity .2s;
-        }
-        .ql-cart-checkout:hover { opacity: .85; }
-
-        /* Badge on cart icon */
-        .cart-btn { position: relative; }
-        .ql-cart-badge {
-          display: none;
-          position: absolute;
-          top: -6px; right: -6px;
-          width: 18px; height: 18px;
-          border-radius: 50%;
-          background: linear-gradient(135deg,#ff0080,#a855f7);
-          color: #fff;
-          font-size: 10px;
-          font-weight: 600;
-          align-items: center;
-          justify-content: center;
-          font-family: 'DM Sans', sans-serif;
-          pointer-events: none;
-        }
-      `;
-      document.head.appendChild(style);
-    }
-  };
-
-  // Auto-init when DOM ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => QLCart.init());
-  } else {
-    QLCart.init();
-  }
-
-})();
-n:relative;margin-bottom:14px}
+.ql-carousel-wrap{position:relative;margin-bottom:14px}
 .ql-carousel{overflow:hidden;border-radius:12px}
 .ql-carousel-track{display:flex;transition:transform .42s cubic-bezier(.4,0,.2,1)}
 .ql-carousel-slide{flex:0 0 100%;position:relative}
@@ -903,7 +533,7 @@ const i18n = {
 };
 
 let currentLang = localStorage.getItem('ql_lang') || 'en';
-let cart = [];
+let cart = JSON.parse(localStorage.getItem('ql_cart') || '[]');
 let stickerQty = 1;
 let carIdx = 0;
 
@@ -974,12 +604,15 @@ function addStickers() {
   });
 }
 
+function saveCart() { localStorage.setItem('ql_cart', JSON.stringify(cart)); }
+
 /* ── Core cart ── */
 function addToCart(item) {
   const qty = item.qty || 1;
   const existing = cart.find(i => i.type === item.type);
   if (existing) { existing.qty += qty; }
   else { cart.push({ ...item, qty }); }
+  saveCart();
   updateCartUI();
   showToast(i18n[currentLang].added);
   openCart();
@@ -987,10 +620,12 @@ function addToCart(item) {
 
 function changeCartQty(idx, d) {
   cart[idx].qty = Math.max(1, cart[idx].qty + d);
+  saveCart();
   updateCartUI();
 }
 function removeFromCart(idx) {
   cart.splice(idx, 1);
+  saveCart();
   updateCartUI();
 }
 
