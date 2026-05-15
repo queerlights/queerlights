@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Queer Lights – A4 Art Prints</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --pink:#ff0080;--purple:#a855f7;--cyan:#00c8ff;--green:#00ff9d;
+  --bg:#000;--surface:#0a0a0a;--border:#1a1a1a;--border2:#2a2a2a;
+}
+html{scroll-behavior:smooth}
+.ql-root{background:var(--bg);color:#fff;font-family:'DM Sans',sans-serif;min-height:100vh}
+
+/* NAV */
+.ql-nav{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(0,0,0,.96);backdrop-filter:blur(12px);z-index:100}
+.ql-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;background:linear-gradient(90deg,#ff0080,#ff8c00,#ffe000,#00ff9d,#00c8ff,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:1px;line-height:1;cursor:pointer}
+.nav-right{display:flex;align-items:center;gap:12px}
+.ql-nav-links{display:flex;align-items:center;gap:18px;font-size:13px;color:#999}
+.ql-nav-links span{cursor:pointer;transition:color .2s}.ql-nav-links span:hover{color:#fff}
+.ql-cart-btn{display:flex;align-items:center;gap:7px;border:1.5px solid var(--green);border-radius:30px;padding:6px 14px;cursor:pointer;color:var(--green);font-size:12px;font-weight:500;letter-spacing:.5px;transition:background .2s;white-space:nowrap}
+.ql-cart-btn:hover{background:rgba(0,255,157,.08)}
+.ql-cart-count-pill{background:var(--pink);color:#fff;font-size:10px;font-weight:700;min-width:18px;height:18px;border-radius:9px;padding:0 5px;display:none;align-items:center;justify-content:center}
+.lang-switcher{display:flex;align-items:center;gap:2px;background:#111;border:1px solid #222;border-radius:20px;padding:3px}
+.lang-btn{padding:4px 10px;border-radius:16px;font-size:11px;font-weight:500;cursor:pointer;border:none;background:transparent;color:#666;font-family:'DM Sans',sans-serif;transition:all .2s}
+.lang-btn.active{background:linear-gradient(90deg,var(--pink),var(--purple));color:#fff}
+
+/* BURGER SHOP MENU */
+.ql-burger-wrap{position:relative;display:flex;align-items:center}
+.ql-burger-btn{background:none;border:1.5px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 10px;cursor:pointer;color:#fff;font-size:18px;line-height:1;transition:border-color .2s}
+.ql-burger-btn:hover{border-color:rgba(255,255,255,.5)}
+.ql-burger-dropdown{display:none;position:absolute;top:calc(100% + 10px);right:0;background:#111;border:1px solid #222;border-radius:12px;min-width:180px;overflow:hidden;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.6)}
+.ql-burger-dropdown.open{display:block}
+.ql-burger-dropdown a{display:block;padding:13px 18px;font-size:13px;font-weight:500;color:#ccc;text-decoration:none;letter-spacing:.5px;transition:background .15s,color .15s;border-bottom:1px solid #1a1a1a}
+.ql-burger-dropdown a:last-child{border-bottom:none}
+.ql-burger-dropdown a:hover{background:#1a1a1a;color:#fff}
+
+/* PAGE HEADER */
+.ql-page-header{padding:40px 20px 16px;background:linear-gradient(180deg,#100800 0%,#000 100%);text-align:center}
+.ql-page-title{font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:2px;background:linear-gradient(90deg,#ffb400,#ff8c00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:0}
+.ql-page-sub{font-size:13px;color:#777;margin:6px 0 0}
+
+/* A4 PRINT SHOWCASE */
+.ql-print-showcase{margin:24px 16px;background:linear-gradient(135deg,#1a1000,#080500);border:1px solid rgba(255,180,0,.3);border-radius:18px;padding:24px 20px;overflow:hidden}
+.ql-print-header{text-align:center;margin-bottom:20px}
+.ql-print-tag{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#ffb400;margin-bottom:8px}
+.ql-print-title{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:2px;background:linear-gradient(90deg,#ffb400,#ff8c00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+.ql-print-sub{font-size:12px;color:#888;line-height:1.6}
+
+/* Carousel */
+.ql-carousel-wrap{position:relative;margin-bottom:14px}
+.ql-carousel{overflow:hidden;border-radius:12px}
+.ql-carousel-track{display:flex;transition:transform .42s cubic-bezier(.4,0,.2,1)}
+.ql-carousel-slide{flex:0 0 100%;position:relative}
+.ql-carousel-slide img{width:100%;display:block;aspect-ratio:3/4;object-fit:cover;border-radius:12px}
+.ql-carousel-slide-caption{position:absolute;bottom:0;left:0;right:0;padding:18px 14px 12px;background:linear-gradient(0deg,rgba(0,0,0,.75) 0%,transparent 100%);border-radius:0 0 12px 12px;font-size:11px;color:#ddd;letter-spacing:1.5px;text-transform:uppercase}
+.ql-car-prev,.ql-car-next{position:absolute;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,180,0,.5);background:rgba(0,0,0,.6);color:#ffb400;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;transition:all .2s;backdrop-filter:blur(6px)}
+.ql-car-prev{left:8px}.ql-car-next{right:8px}
+.ql-car-prev:hover,.ql-car-next:hover{background:rgba(255,180,0,.2);border-color:#ffb400}
+.ql-carousel-dots{display:flex;justify-content:center;gap:6px;margin-top:10px}
+.ql-dot{width:6px;height:6px;border-radius:50%;background:#333;cursor:pointer;transition:all .25s;border:none;padding:0}
+.ql-dot.active{background:#ffb400;width:20px;border-radius:3px}
+.ql-carousel-select-btn{width:100%;padding:11px;border-radius:30px;border:1.5px solid rgba(255,180,0,.5);background:transparent;color:#ffb400;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;letter-spacing:1px;cursor:pointer;margin-top:10px;transition:all .2s}
+.ql-carousel-select-btn:hover{background:rgba(255,180,0,.1);border-color:#ffb400}
+
+.ql-print-specs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0}
+.ql-print-spec{background:rgba(255,180,0,.07);border:1px solid rgba(255,180,0,.15);border-radius:10px;padding:12px;text-align:center}
+.ql-print-spec-val{font-family:'Bebas Neue',sans-serif;font-size:20px;color:#ffb400;letter-spacing:1px;display:block}
+.ql-print-spec-key{font-size:10px;color:#666;letter-spacing:1px;text-transform:uppercase;margin-top:2px;display:block}
+
+.ql-print-paper{margin-bottom:18px}
+.ql-print-paper-title{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#ffb400;margin-bottom:10px}
+.ql-print-paper-list{list-style:none;display:flex;flex-direction:column;gap:6px}
+.ql-print-paper-list li{font-size:12px;color:#888;padding-left:14px;position:relative;line-height:1.5}
+.ql-print-paper-list li::before{content:'—';position:absolute;left:0;color:#ffb400;font-size:10px}
+
+.ql-print-avail{margin-bottom:20px}
+.ql-print-avail-bar{height:3px;background:#1a1a1a;border-radius:2px;margin-bottom:6px}
+.ql-print-avail-fill{height:100%;width:15%;background:linear-gradient(90deg,#ffb400,#ff8c00);border-radius:2px}
+.ql-print-avail-text{font-size:11px;color:#666;letter-spacing:1px}
+
+.ql-print-cta{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.ql-print-price{font-family:'Bebas Neue',sans-serif;font-size:36px;color:#ffb400;letter-spacing:1px}
+.ql-print-per{font-size:11px;color:#666;display:block;margin-top:-4px}
+.ql-print-btn{flex:1;padding:14px;border-radius:30px;border:none;background:linear-gradient(90deg,#ffb400,#ff8c00);color:#000;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;cursor:pointer;text-transform:uppercase;transition:opacity .2s}
+.ql-print-btn:hover{opacity:.85}
+
+/* CART DRAWER */
+.ql-cart-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;backdrop-filter:blur(4px)}
+.ql-cart-overlay.open{display:block}
+.ql-cart-drawer{position:fixed;top:0;right:0;bottom:0;width:min(360px,100vw);background:#0a0a0a;border-left:1px solid #1a1a1a;z-index:201;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1)}
+.ql-cart-drawer.open{transform:translateX(0)}
+.ql-cart-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid #1a1a1a}
+.ql-cart-head-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;background:linear-gradient(90deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:0}
+.ql-cart-close-btn{background:none;border:1px solid #333;border-radius:50%;width:30px;height:30px;color:#aaa;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.ql-cart-close-btn:hover{border-color:#fff;color:#fff}
+.ql-cart-body{flex:1;overflow-y:auto;padding:16px}
+.ql-cart-empty{text-align:center;padding:40px 0;color:#444}
+.ql-cart-empty-icon{font-size:40px;margin-bottom:10px}
+.ql-cart-item{display:flex;gap:12px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #111}
+.ql-cart-item-thumb{width:54px;height:68px;border-radius:8px;overflow:hidden;flex-shrink:0;background:#111}
+.ql-cart-item-thumb img{width:100%;height:100%;object-fit:cover}
+.ql-cart-item-thumb-emoji{width:54px;height:68px;border-radius:8px;background:#111;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.ql-cart-item-info{flex:1;min-width:0}
+.ql-cart-item-type{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#555;margin-bottom:3px}
+.ql-cart-item-name{font-size:13px;font-weight:500;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ql-cart-item-price{font-size:14px;font-weight:500;color:#ffb400;margin-bottom:6px}
+.ql-cart-item-qty{display:flex;align-items:center;gap:8px}
+.ql-cqty-btn{width:22px;height:22px;border-radius:50%;border:1px solid #333;background:#1a1a1a;color:#fff;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ql-cqty-val{font-size:13px;min-width:16px;text-align:center}
+.ql-cart-item-remove{background:none;border:none;color:#444;font-size:18px;cursor:pointer;padding:0 4px;transition:color .2s;align-self:flex-start}
+.ql-cart-item-remove:hover{color:#ff4444}
+.ql-cart-footer{padding:16px;border-top:1px solid #1a1a1a}
+.ql-cart-discount{display:flex;gap:8px;margin-bottom:14px}
+.ql-cart-discount-input{flex:1;background:#111;border:1px solid #222;border-radius:8px;padding:8px 12px;color:#fff;font-size:12px;font-family:'DM Sans',sans-serif}
+.ql-cart-discount-btn{background:transparent;border:1px solid #333;border-radius:8px;padding:8px 14px;color:#aaa;font-size:11px;font-weight:500;letter-spacing:1px;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
+.ql-cart-discount-btn:hover{border-color:#fff;color:#fff}
+.ql-cart-subtotal,.ql-cart-total-row{display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px}
+.ql-cart-total-row{font-weight:500}
+.ql-cart-subtotal-label,.ql-cart-total-label{color:#666}
+.ql-checkout-btn{width:100%;padding:14px;border-radius:30px;border:none;background:linear-gradient(90deg,var(--pink),var(--purple));color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:1px;cursor:pointer;margin:12px 0 8px;text-transform:uppercase}
+.ql-pay-alt{display:flex;gap:8px}
+.ql-pay-alt-btn{flex:1;padding:10px;border-radius:20px;border:1px solid #222;background:#111;color:#aaa;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+.ql-pay-alt-btn:hover{border-color:#444;color:#fff}
+
+/* LIGHTBOX */
+.ql-lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:500;align-items:center;justify-content:center;flex-direction:column;padding:20px}
+.ql-lightbox.open{display:flex}
+.ql-lightbox img{max-width:100%;max-height:82vh;border-radius:10px;object-fit:contain}
+.ql-lightbox-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border-radius:50%;border:1px solid #444;background:rgba(0,0,0,.8);color:#aaa;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.ql-lightbox-close:hover{border-color:#fff;color:#fff}
+.ql-lightbox-caption{font-size:11px;color:#666;letter-spacing:2px;text-transform:uppercase;margin-top:14px;text-align:center}
+
+/* TOAST */
+.ql-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:#111;border:1px solid #333;border-radius:30px;padding:10px 20px;font-size:13px;color:#fff;opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;z-index:600;white-space:nowrap}
+.ql-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media(min-width:768px){
+  .ql-print-showcase{margin:24px 60px}
+  .ql-print-specs{grid-template-columns:repeat(4,1fr)}
+}
+</style>
+</head>
+<body>
+<div class="ql-root">
+
+  <!-- NAV -->
+  <nav class="ql-nav">
+    <div class="ql-logo" onclick="window.location='home.html'">QUEER<br>LIGHTS</div>
+    <div class="nav-right">
+      <div class="ql-nav-links">
+        <div class="ql-burger-wrap">
+          <button class="ql-burger-btn" onclick="toggleBurger()" id="burgerBtn">☰</button>
+          <div class="ql-burger-dropdown" id="burgerDropdown">
+            <a href="gallery.html" data-i18n="menu_canvas">Print on Canvas</a>
+            <a href="paper.html" data-i18n="menu_paper">Print on Paper</a>
+            <a href="stickers.html" data-i18n="menu_stickers">Stickers</a>
+          </div>
+        </div>
+        <span data-i18n="nav_gallery" onclick="window.location='gallery.html'">Gallery</span>
+        <span data-i18n="nav_commission" onclick="window.location='commission.html'">Commission</span>
+        <span data-i18n="nav_about" onclick="window.location='about.html'">About</span>
+      </div>
+      <div class="ql-cart-btn" onclick="openCart()">
+        <span>🛒</span>
+        <span id="cartBtnLabel" data-i18n="cart_label">CART</span>
+        <span class="ql-cart-count-pill" id="cartCount">0</span>
+      </div>
+      <div class="lang-switcher">
+        <button class="lang-btn active" id="btn-en" onclick="setLang('en')">🇬🇧 EN</button>
+        <button class="lang-btn" id="btn-fr" onclick="setLang('fr')">🇫🇷 FR</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <div class="ql-page-header">
+    <p class="ql-page-title" data-i18n="print_title">A4 ART PRINTS</p>
+    <p class="ql-page-sub" data-i18n="print_sub">Fine art prints on exceptional paper · Signed &amp; numbered · 20 copies only</p>
+  </div>
+
+  <!-- A4 PRINT SHOWCASE -->
+  <div class="ql-print-showcase">
+    <div class="ql-print-header">
+      <p class="ql-print-tag" data-i18n="print_tag">LIMITED EDITION ✦</p>
+    </div>
+
+    <div class="ql-carousel-wrap">
+      <div class="ql-carousel" id="carousel">
+        <div class="ql-carousel-track" id="carouselTrack"></div>
+      </div>
+      <button class="ql-car-prev" onclick="carMove(-1)">‹</button>
+      <button class="ql-car-next" onclick="carMove(1)">›</button>
+    </div>
+    <div class="ql-carousel-dots" id="carouselDots"></div>
+    <button class="ql-carousel-select-btn" onclick="addCurrentPrint()" data-i18n="select_print">✦ SELECT THIS PRINT</button>
+
+    <div class="ql-print-specs">
+      <div class="ql-print-spec">
+        <span class="ql-print-spec-val">A4</span>
+        <span class="ql-print-spec-key" data-i18n="spec_format">Format</span>
+      </div>
+      <div class="ql-print-spec">
+        <span class="ql-print-spec-val">20</span>
+        <span class="ql-print-spec-key" data-i18n="spec_copies">Copies</span>
+      </div>
+      <div class="ql-print-spec">
+        <span class="ql-print-spec-val">300</span>
+        <span class="ql-print-spec-key">DPI</span>
+      </div>
+      <div class="ql-print-spec">
+        <span class="ql-print-spec-val">✦</span>
+        <span class="ql-print-spec-key" data-i18n="spec_signed">Signed</span>
+      </div>
+    </div>
+
+    <div class="ql-print-paper">
+      <p class="ql-print-paper-title" data-i18n="paper_title">PAPER QUALITY</p>
+      <ul class="ql-print-paper-list">
+        <li data-i18n="paper_1">Hahnemühle Photo Rag 308g/m² — museum reference paper</li>
+        <li data-i18n="paper_2">Archival pigment giclée printing — 100+ year colour resistance</li>
+        <li data-i18n="paper_3">Ultra-smooth matte surface, zero glare</li>
+        <li data-i18n="paper_4">Natural warm white for exceptional black depth</li>
+        <li data-i18n="paper_5">Delivered in a rigid protective sleeve</li>
+      </ul>
+    </div>
+
+    <div class="ql-print-avail">
+      <div class="ql-print-avail-bar"><div class="ql-print-avail-fill"></div></div>
+      <span class="ql-print-avail-text" data-i18n="print_avail">3 / 20 sold</span>
+    </div>
+
+    <div class="ql-print-cta">
+      <div>
+        <span class="ql-print-price">€120</span>
+        <span class="ql-print-per" data-i18n="print_per">/ unique copy</span>
+      </div>
+      <button class="ql-print-btn" onclick="addCurrentPrint()" data-i18n="order_print">ORDER NOW</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- CART -->
+<div class="ql-cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="ql-cart-drawer" id="cartDrawer">
+  <div class="ql-cart-head">
+    <span class="ql-cart-head-title" id="cartHeadTitle">CART • 0</span>
+    <button class="ql-cart-close-btn" onclick="closeCart()">×</button>
+  </div>
+  <div class="ql-cart-body">
+    <div class="ql-cart-empty" id="cartEmpty">
+      <div class="ql-cart-empty-icon">🛒</div>
+      <span id="cartEmptyText">Your cart is empty</span>
+    </div>
+    <div id="cartItems"></div>
+  </div>
+  <div class="ql-cart-footer" id="cartFooter" style="display:none">
+    <div class="ql-cart-discount">
+      <input class="ql-cart-discount-input" type="text" id="discountInput" placeholder="DISCOUNT CODE">
+      <button class="ql-cart-discount-btn" onclick="applyDiscount()" data-i18n="apply_code">APPLY</button>
+    </div>
+    <div class="ql-cart-subtotal">
+      <span class="ql-cart-subtotal-label" data-i18n="subtotal">Subtotal</span>
+      <span class="ql-cart-subtotal-val" id="cartSubtotal">€0</span>
+    </div>
+    <div class="ql-cart-total-row">
+      <span class="ql-cart-total-label" data-i18n="total">Total</span>
+      <span class="ql-cart-total-val" id="cartTotal">€0</span>
+    </div>
+    <button class="ql-checkout-btn" onclick="checkout()">CHECKOUT • <span id="checkoutTotal">€0</span></button>
+    <div class="ql-pay-alt">
+      <button class="ql-pay-alt-btn" onclick="checkout('paypal')">🅿 PayPal</button>
+      <button class="ql-pay-alt-btn" onclick="checkout('stripe')">💳 Stripe</button>
+    </div>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="ql-lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="ql-lightbox-close" onclick="closeLightbox()">×</button>
+  <img id="lightboxImg" src="" alt="">
+  <p class="ql-lightbox-caption" id="lightboxCaption"></p>
+</div>
+
+<div class="ql-toast" id="toast"></div>
+
+<script>
+const COLLAGES = [
+  { id:'bloom',  file:'images/bloom_without_a_face.jpg',              name:'Bloom Without a Face',  color:'#ff6eb4' },
+  { id:'sandy',  file:'images/sandy_constellations.jpg',              name:'Sandy Constellations',  color:'#ccc' },
+  { id:'divine', file:'images/divine_chaos.jpg',                      name:'Divine Chaos',          color:'#c084fc' },
+  { id:'lotus',  file:'images/IMG_2072.JPG',                          name:'Lotus Lake',            color:'#00ff9d' },
+  { id:'c4',     file:'images/IMG_1634.jpeg',                         name:'Pink Beach',            color:'#ff6eb4' },
+  { id:'c5',     file:'images/IMG_1844.JPG',                          name:'Eye of the Sea',        color:'#ffb400' },
+  { id:'c7',     file:'images/IMG_2075.JPG',                          name:'Purple Fever',          color:'#c084fc' },
+];
+
+const i18n = {
+  en: {
+    nav_gallery:"Gallery", nav_about:"About", nav_commission:"Commission",
+    menu_canvas:"Print on Canvas", menu_paper:"Print on Paper", menu_stickers:"Stickers",
+    print_tag:"LIMITED EDITION ✦", print_title:"A4 ART PRINTS",
+    print_sub:"Fine art prints on exceptional paper · Signed & numbered · 20 copies only",
+    spec_format:"Format", spec_copies:"Copies", spec_signed:"Signed",
+    paper_title:"PAPER QUALITY",
+    paper_1:"Hahnemühle Photo Rag 308g/m² — museum reference paper",
+    paper_2:"Archival pigment giclée printing — 100+ year colour resistance",
+    paper_3:"Ultra-smooth matte surface, zero glare",
+    paper_4:"Natural warm white for exceptional black depth",
+    paper_5:"Delivered in a rigid protective sleeve",
+    print_avail:"3 / 20 sold", print_per:"/ unique copy",
+    order_print:"ORDER NOW", select_print:"✦ SELECT THIS PRINT",
+    apply_code:"APPLY", subtotal:"Subtotal", total:"Total",
+    cart_empty:"Your cart is empty", added:"✓ Added to cart",
+    cart_label:"CART", type_print:"A4 Print · Limited Edition",
+  },
+  fr: {
+    nav_gallery:"Galerie", nav_about:"À propos", nav_commission:"Commissions",
+    menu_canvas:"Impression sur Toile", menu_paper:"Impression sur Papier", menu_stickers:"Stickers",
+    print_tag:"ÉDITION LIMITÉE ✦", print_title:"TIRAGES A4",
+    print_sub:"Tirages d'art sur papier d'exception · Signés & numérotés · 20 exemplaires seulement",
+    spec_format:"Format", spec_copies:"Exemplaires", spec_signed:"Signé",
+    paper_title:"QUALITÉ PAPIER",
+    paper_1:"Papier Hahnemühle Photo Rag 308g/m² — référence musée",
+    paper_2:"Impression giclée aux pigments archivaux — résistance 100+ ans",
+    paper_3:"Surface mate ultra-douce, zéro reflet",
+    paper_4:"Blanc naturel chaud pour une profondeur des noirs exceptionnelle",
+    paper_5:"Livré sous pochette de protection rigide",
+    print_avail:"3 / 20 vendus", print_per:"/ exemplaire unique",
+    order_print:"COMMANDER", select_print:"✦ CHOISIR CE TIRAGE",
+    apply_code:"APPLIQUER", subtotal:"Sous-total", total:"Total",
+    cart_empty:"Votre panier est vide", added:"✓ Ajouté au panier",
+    cart_label:"PANIER", type_print:"Tirage A4 · Édition Limitée",
+  }
+};
+
+let currentLang = localStorage.getItem('ql_lang') || 'en';
+let cart = JSON.parse(localStorage.getItem('ql_cart') || '[]');
+let carIdx = 0;
+
+function buildCarousel() {
+  const track = document.getElementById('carouselTrack');
+  const dots  = document.getElementById('carouselDots');
+  track.innerHTML = '';
+  dots.innerHTML  = '';
+  COLLAGES.forEach((c, i) => {
+    const slide = document.createElement('div');
+    slide.className = 'ql-carousel-slide';
+    slide.innerHTML = `
+      <img src="${c.file}" alt="${c.name}" loading="lazy" onclick="openLightbox(${i})">
+      <div class="ql-carousel-slide-caption">${c.name}</div>`;
+    track.appendChild(slide);
+    const dot = document.createElement('button');
+    dot.className = 'ql-dot' + (i === 0 ? ' active' : '');
+    dot.onclick = () => carGo(i);
+    dots.appendChild(dot);
+  });
+}
+
+function carGo(idx) {
+  carIdx = (idx + COLLAGES.length) % COLLAGES.length;
+  document.getElementById('carouselTrack').style.transform = `translateX(-${carIdx * 100}%)`;
+  document.querySelectorAll('.ql-dot').forEach((d, i) => d.classList.toggle('active', i === carIdx));
+}
+function carMove(d) { carGo(carIdx + d); }
+
+function addCurrentPrint() {
+  const c = COLLAGES[carIdx];
+  addToCart({
+    type: 'print_' + c.id,
+    name: 'A4 Print — ' + c.name,
+    price: 120,
+    imgSrc: c.file,
+    typeLabel: i18n[currentLang].type_print,
+  });
+}
+
+function saveCart() { localStorage.setItem('ql_cart', JSON.stringify(cart)); }
+
+function addToCart(item) {
+  const qty = item.qty || 1;
+  const existing = cart.find(i => i.type === item.type);
+  if (existing) { existing.qty += qty; }
+  else { cart.push({ ...item, qty }); }
+  saveCart();
+  updateCartUI();
+  showToast(i18n[currentLang].added);
+  openCart();
+}
+
+function changeCartQty(idx, d) {
+  cart[idx].qty += d;
+  if (cart[idx].qty <= 0) cart.splice(idx, 1);
+  saveCart();
+  updateCartUI();
+}
+function removeFromCart(idx) {
+  cart.splice(idx, 1);
+  saveCart();
+  updateCartUI();
+}
+
+function updateCartUI() {
+  const lang = currentLang;
+  const count = cart.reduce((s, i) => s + i.qty, 0);
+  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+
+  const pill = document.getElementById('cartCount');
+  pill.textContent = count;
+  pill.style.display = count > 0 ? 'flex' : 'none';
+  document.getElementById('cartHeadTitle').textContent = (i18n[lang].cart_label || 'CART') + ' • ' + count;
+
+  const empty  = document.getElementById('cartEmpty');
+  const itemsEl = document.getElementById('cartItems');
+  const footer = document.getElementById('cartFooter');
+
+  if (!cart.length) {
+    empty.style.display = 'block';
+    document.getElementById('cartEmptyText').textContent = i18n[lang].cart_empty || 'Your cart is empty';
+    itemsEl.innerHTML = '';
+    footer.style.display = 'none';
+    return;
+  }
+  empty.style.display = 'none';
+  footer.style.display = 'block';
+
+  itemsEl.innerHTML = cart.map((item, idx) => {
+    const thumbHtml = item.imgSrc
+      ? `<div class="ql-cart-item-thumb"><img src="${item.imgSrc}" alt="${item.name}"></div>`
+      : `<div class="ql-cart-item-thumb-emoji">${item.emoji || '✦'}</div>`;
+    return `
+      <div class="ql-cart-item">
+        ${thumbHtml}
+        <div class="ql-cart-item-info">
+          <div class="ql-cart-item-type">${item.typeLabel || ''}</div>
+          <div class="ql-cart-item-name">${item.name}</div>
+          <div class="ql-cart-item-price">€${item.price * item.qty}</div>
+          <div class="ql-cart-item-qty">
+            <button class="ql-cqty-btn" onclick="changeCartQty(${idx},-1)">−</button>
+            <span class="ql-cqty-val">${item.qty}</span>
+            <button class="ql-cqty-btn" onclick="changeCartQty(${idx},1)">+</button>
+          </div>
+        </div>
+        <button class="ql-cart-item-remove" onclick="removeFromCart(${idx})">×</button>
+      </div>`;
+  }).join('');
+
+  document.getElementById('cartSubtotal').textContent = '€' + total;
+  document.getElementById('cartTotal').textContent = '€' + total;
+  document.getElementById('checkoutTotal').textContent = '€' + total;
+}
+
+function toggleBurger() {
+  document.getElementById('burgerDropdown').classList.toggle('open');
+}
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.ql-burger-wrap')) {
+    document.getElementById('burgerDropdown').classList.remove('open');
+  }
+});
+
+function openCart() {
+  document.getElementById('cartDrawer').classList.add('open');
+  document.getElementById('cartOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeCart() {
+  document.getElementById('cartDrawer').classList.remove('open');
+  document.getElementById('cartOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function openLightbox(idx) {
+  const c = COLLAGES[idx];
+  document.getElementById('lightboxImg').src = c.file;
+  document.getElementById('lightboxCaption').textContent = c.name;
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+function applyDiscount() {
+  const code = document.getElementById('discountInput').value.trim().toUpperCase();
+  showToast(code === 'QUEER10' ? '✓ -10% applied!' : 'Invalid code');
+}
+
+function checkout(method) {
+  if (!cart.length) return;
+  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  if (method === 'paypal') {
+    window.open('https://paypal.me/kamion45/' + total + 'EUR', '_blank');
+    closeCart();
+  } else { showToast('→ Stripe coming soon...'); }
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.getElementById('btn-fr').classList.toggle('active', lang === 'fr');
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (i18n[lang][key] !== undefined) el.textContent = i18n[lang][key];
+  });
+  localStorage.setItem('ql_lang', lang);
+  updateCartUI();
+}
+
+buildCarousel();
+setLang(currentLang);
+</script>
+</body>
+</html>

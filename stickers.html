@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Queer Lights – Sticker Packs</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --pink:#ff0080;--purple:#a855f7;--cyan:#00c8ff;--green:#00ff9d;
+  --bg:#000;--border:#1a1a1a;
+}
+html{scroll-behavior:smooth}
+.ql-root{background:var(--bg);color:#fff;font-family:'DM Sans',sans-serif;min-height:100vh}
+
+/* NAV */
+.ql-nav{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(0,0,0,.96);backdrop-filter:blur(12px);z-index:100}
+.ql-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;background:linear-gradient(90deg,#ff0080,#ff8c00,#ffe000,#00ff9d,#00c8ff,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:1px;line-height:1;cursor:pointer}
+.nav-right{display:flex;align-items:center;gap:12px}
+.ql-nav-links{display:flex;align-items:center;gap:18px;font-size:13px;color:#999}
+.ql-nav-links span{cursor:pointer;transition:color .2s}.ql-nav-links span:hover{color:#fff}
+.ql-cart-btn{display:flex;align-items:center;gap:7px;border:1.5px solid var(--green);border-radius:30px;padding:6px 14px;cursor:pointer;color:var(--green);font-size:12px;font-weight:500;letter-spacing:.5px;transition:background .2s;white-space:nowrap}
+.ql-cart-btn:hover{background:rgba(0,255,157,.08)}
+.ql-cart-count-pill{background:var(--pink);color:#fff;font-size:10px;font-weight:700;min-width:18px;height:18px;border-radius:9px;padding:0 5px;display:none;align-items:center;justify-content:center}
+.lang-switcher{display:flex;align-items:center;gap:2px;background:#111;border:1px solid #222;border-radius:20px;padding:3px}
+.lang-btn{padding:4px 10px;border-radius:16px;font-size:11px;font-weight:500;cursor:pointer;border:none;background:transparent;color:#666;font-family:'DM Sans',sans-serif;transition:all .2s}
+.lang-btn.active{background:linear-gradient(90deg,var(--pink),var(--purple));color:#fff}
+
+/* BURGER */
+.ql-burger-wrap{position:relative;display:flex;align-items:center}
+.ql-burger-btn{background:none;border:1.5px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 10px;cursor:pointer;color:#fff;font-size:18px;line-height:1;transition:border-color .2s}
+.ql-burger-btn:hover{border-color:rgba(255,255,255,.5)}
+.ql-burger-dropdown{display:none;position:absolute;top:calc(100% + 10px);right:0;background:#111;border:1px solid #222;border-radius:12px;min-width:180px;overflow:hidden;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.6)}
+.ql-burger-dropdown.open{display:block}
+.ql-burger-dropdown a{display:block;padding:13px 18px;font-size:13px;font-weight:500;color:#ccc;text-decoration:none;letter-spacing:.5px;transition:background .15s,color .15s;border-bottom:1px solid #1a1a1a}
+.ql-burger-dropdown a:last-child{border-bottom:none}
+.ql-burger-dropdown a:hover{background:#1a1a1a;color:#fff}
+
+/* PAGE HEADER */
+.ql-page-header{padding:40px 20px 16px;background:linear-gradient(180deg,#0d001a 0%,#000 100%);text-align:center}
+.ql-page-tag{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--pink);margin-bottom:10px}
+.ql-page-title{font-family:'Bebas Neue',sans-serif;font-size:48px;letter-spacing:3px;background:linear-gradient(90deg,var(--pink),var(--purple),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:0}
+.ql-page-sub{font-size:13px;color:#777;margin:8px 0 0;line-height:1.6}
+
+/* STICKER GRID */
+.ql-sticker-section{margin:24px 16px}
+.ql-sticker-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:24px}
+.ql-sticker-cell{border-radius:14px;overflow:hidden;position:relative;aspect-ratio:3/4;cursor:pointer}
+.ql-sticker-cell img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
+.ql-sticker-cell:hover img{transform:scale(1.05)}
+.ql-sticker-cell-label{position:absolute;bottom:0;left:0;right:0;padding:14px 10px 10px;background:linear-gradient(0deg,rgba(0,0,0,.8) 0%,transparent 100%);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#ddd}
+
+/* SPECS */
+.ql-sticker-specs{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:24px}
+.ql-spec-pill{background:#0d0d0d;border:1px solid #222;border-radius:12px;padding:14px;text-align:center}
+.ql-spec-val{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;background:linear-gradient(90deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block}
+.ql-spec-key{font-size:10px;color:#555;letter-spacing:1px;text-transform:uppercase;margin-top:3px;display:block}
+
+/* QTY + CTA */
+.ql-sticker-order{background:linear-gradient(135deg,#1a0030,#000814);border:1px solid rgba(168,85,247,.25);border-radius:18px;padding:22px 20px}
+.ql-qty{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.ql-qty-label{font-size:12px;color:#888;flex:1}
+.ql-qty-btn{width:32px;height:32px;border-radius:50%;border:1px solid #333;background:#1a1a1a;color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.ql-qty-btn:hover{background:#2a2a2a}
+.ql-qty-val{font-size:16px;font-weight:500;min-width:24px;text-align:center}
+.ql-sticker-cta{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.ql-sticker-price{font-family:'Bebas Neue',sans-serif;font-size:38px;color:var(--pink);letter-spacing:1px}
+.ql-sticker-per{font-size:11px;color:#555;display:block;margin-top:-4px}
+.ql-sticker-btn{flex:1;padding:14px;border-radius:30px;border:none;background:linear-gradient(90deg,var(--pink),var(--purple));color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;cursor:pointer;text-transform:uppercase;transition:opacity .2s}
+.ql-sticker-btn:hover{opacity:.85}
+
+/* CART DRAWER */
+.ql-cart-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;backdrop-filter:blur(4px)}
+.ql-cart-overlay.open{display:block}
+.ql-cart-drawer{position:fixed;top:0;right:0;bottom:0;width:min(360px,100vw);background:#0a0a0a;border-left:1px solid #1a1a1a;z-index:201;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1)}
+.ql-cart-drawer.open{transform:translateX(0)}
+.ql-cart-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid #1a1a1a}
+.ql-cart-head-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;background:linear-gradient(90deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:0}
+.ql-cart-close-btn{background:none;border:1px solid #333;border-radius:50%;width:30px;height:30px;color:#aaa;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.ql-cart-close-btn:hover{border-color:#fff;color:#fff}
+.ql-cart-body{flex:1;overflow-y:auto;padding:16px}
+.ql-cart-empty{text-align:center;padding:40px 0;color:#444}
+.ql-cart-empty-icon{font-size:40px;margin-bottom:10px}
+.ql-cart-item{display:flex;gap:12px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #111}
+.ql-cart-item-thumb{width:54px;height:68px;border-radius:8px;overflow:hidden;flex-shrink:0;background:#111}
+.ql-cart-item-thumb img{width:100%;height:100%;object-fit:cover}
+.ql-cart-item-thumb-emoji{width:54px;height:68px;border-radius:8px;background:#111;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.ql-cart-item-info{flex:1;min-width:0}
+.ql-cart-item-type{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#555;margin-bottom:3px}
+.ql-cart-item-name{font-size:13px;font-weight:500;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ql-cart-item-price{font-size:14px;font-weight:500;color:var(--pink);margin-bottom:6px}
+.ql-cart-item-qty-row{display:flex;align-items:center;gap:8px}
+.ql-cqty-btn{width:22px;height:22px;border-radius:50%;border:1px solid #333;background:#1a1a1a;color:#fff;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ql-cqty-val{font-size:13px;min-width:16px;text-align:center}
+.ql-cart-item-remove{background:none;border:none;color:#444;font-size:18px;cursor:pointer;padding:0 4px;transition:color .2s;align-self:flex-start}
+.ql-cart-item-remove:hover{color:#ff4444}
+.ql-cart-footer{padding:16px;border-top:1px solid #1a1a1a}
+.ql-cart-discount{display:flex;gap:8px;margin-bottom:14px}
+.ql-cart-discount-input{flex:1;background:#111;border:1px solid #222;border-radius:8px;padding:8px 12px;color:#fff;font-size:12px;font-family:'DM Sans',sans-serif}
+.ql-cart-discount-btn{background:transparent;border:1px solid #333;border-radius:8px;padding:8px 14px;color:#aaa;font-size:11px;font-weight:500;letter-spacing:1px;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
+.ql-cart-discount-btn:hover{border-color:#fff;color:#fff}
+.ql-cart-subtotal,.ql-cart-total-row{display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px}
+.ql-cart-total-row{font-weight:500}
+.ql-cart-subtotal-label,.ql-cart-total-label{color:#666}
+.ql-checkout-btn{width:100%;padding:14px;border-radius:30px;border:none;background:linear-gradient(90deg,var(--pink),var(--purple));color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:1px;cursor:pointer;margin:12px 0 8px;text-transform:uppercase}
+.ql-pay-alt{display:flex;gap:8px}
+.ql-pay-alt-btn{flex:1;padding:10px;border-radius:20px;border:1px solid #222;background:#111;color:#aaa;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+.ql-pay-alt-btn:hover{border-color:#444;color:#fff}
+
+/* TOAST */
+.ql-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:#111;border:1px solid #333;border-radius:30px;padding:10px 20px;font-size:13px;color:#fff;opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;z-index:600;white-space:nowrap}
+.ql-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media(min-width:768px){
+  .ql-sticker-section{margin:24px 60px}
+  .ql-sticker-grid{grid-template-columns:repeat(4,1fr)}
+  .ql-sticker-specs{grid-template-columns:repeat(4,1fr)}
+}
+</style>
+</head>
+<body>
+<div class="ql-root">
+
+  <!-- NAV -->
+  <nav class="ql-nav">
+    <div class="ql-logo" onclick="window.location='home.html'">QUEER<br>LIGHTS</div>
+    <div class="nav-right">
+      <div class="ql-nav-links">
+        <div class="ql-burger-wrap">
+          <button class="ql-burger-btn" onclick="toggleBurger()" id="burgerBtn">☰</button>
+          <div class="ql-burger-dropdown" id="burgerDropdown">
+            <a href="gallery.html" data-i18n="menu_canvas">Print on Canvas</a>
+            <a href="paper.html" data-i18n="menu_paper">Print on Paper</a>
+            <a href="stickers.html" data-i18n="menu_stickers">Stickers</a>
+          </div>
+        </div>
+        <span data-i18n="nav_gallery" onclick="window.location='gallery.html'">Gallery</span>
+        <span data-i18n="nav_commission" onclick="window.location='commission.html'">Commission</span>
+        <span data-i18n="nav_about" onclick="window.location='about.html'">About</span>
+      </div>
+      <div class="ql-cart-btn" onclick="openCart()">
+        <span>🛒</span>
+        <span id="cartBtnLabel" data-i18n="cart_label">CART</span>
+        <span class="ql-cart-count-pill" id="cartCount">0</span>
+      </div>
+      <div class="lang-switcher">
+        <button class="lang-btn active" id="btn-en" onclick="setLang('en')">🇬🇧 EN</button>
+        <button class="lang-btn" id="btn-fr" onclick="setLang('fr')">🇫🇷 FR</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <div class="ql-page-header">
+    <p class="ql-page-tag" data-i18n="sticker_tag">NEW ✦</p>
+    <p class="ql-page-title" data-i18n="sticker_title">STICKER PACKS</p>
+    <p class="ql-page-sub" data-i18n="sticker_sub">10 exclusive Queer Lights stickers per pack · Premium vinyl · Worldwide shipping</p>
+  </div>
+
+  <!-- STICKER SECTION -->
+  <div class="ql-sticker-section">
+
+    <!-- PREVIEW GRID -->
+    <div class="ql-sticker-grid" id="stickerGrid"></div>
+
+    <!-- SPECS -->
+    <div class="ql-sticker-specs">
+      <div class="ql-spec-pill">
+        <span class="ql-spec-val">10</span>
+        <span class="ql-spec-key" data-i18n="spec_count">Stickers</span>
+      </div>
+      <div class="ql-spec-pill">
+        <span class="ql-spec-val">VINYL</span>
+        <span class="ql-spec-key" data-i18n="spec_material">Material</span>
+      </div>
+      <div class="ql-spec-pill">
+        <span class="ql-spec-val">UV</span>
+        <span class="ql-spec-key" data-i18n="spec_resist">Resistant</span>
+      </div>
+      <div class="ql-spec-pill">
+        <span class="ql-spec-val">🌍</span>
+        <span class="ql-spec-key" data-i18n="spec_ship">Worldwide</span>
+      </div>
+    </div>
+
+    <!-- ORDER -->
+    <div class="ql-sticker-order">
+      <div class="ql-qty">
+        <span class="ql-qty-label" data-i18n="qty_label">Quantity</span>
+        <button class="ql-qty-btn" onclick="changeQty(-1)">−</button>
+        <span class="ql-qty-val" id="qtyVal">1</span>
+        <button class="ql-qty-btn" onclick="changeQty(1)">+</button>
+      </div>
+      <div class="ql-sticker-cta">
+        <div>
+          <span class="ql-sticker-price">€30</span>
+          <span class="ql-sticker-per" data-i18n="per_pack">/ pack of 10 stickers</span>
+        </div>
+        <button class="ql-sticker-btn" onclick="addStickers()" data-i18n="order_stickers">ORDER A PACK</button>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- CART -->
+<div class="ql-cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="ql-cart-drawer" id="cartDrawer">
+  <div class="ql-cart-head">
+    <span class="ql-cart-head-title" id="cartHeadTitle">CART • 0</span>
+    <button class="ql-cart-close-btn" onclick="closeCart()">×</button>
+  </div>
+  <div class="ql-cart-body">
+    <div class="ql-cart-empty" id="cartEmpty">
+      <div class="ql-cart-empty-icon">🛒</div>
+      <span id="cartEmptyText">Your cart is empty</span>
+    </div>
+    <div id="cartItems"></div>
+  </div>
+  <div class="ql-cart-footer" id="cartFooter" style="display:none">
+    <div class="ql-cart-discount">
+      <input class="ql-cart-discount-input" type="text" id="discountInput" placeholder="DISCOUNT CODE">
+      <button class="ql-cart-discount-btn" onclick="applyDiscount()" data-i18n="apply_code">APPLY</button>
+    </div>
+    <div class="ql-cart-subtotal">
+      <span class="ql-cart-subtotal-label" data-i18n="subtotal">Subtotal</span>
+      <span class="ql-cart-subtotal-val" id="cartSubtotal">€0</span>
+    </div>
+    <div class="ql-cart-total-row">
+      <span class="ql-cart-total-label" data-i18n="total">Total</span>
+      <span class="ql-cart-total-val" id="cartTotal">€0</span>
+    </div>
+    <button class="ql-checkout-btn" onclick="checkout()">CHECKOUT • <span id="checkoutTotal">€0</span></button>
+    <div class="ql-pay-alt">
+      <button class="ql-pay-alt-btn" onclick="checkout('paypal')">🅿 PayPal</button>
+      <button class="ql-pay-alt-btn" onclick="checkout('stripe')">💳 Stripe</button>
+    </div>
+  </div>
+</div>
+
+<div class="ql-toast" id="toast"></div>
+
+<script>
+const PREVIEWS = [
+  { file:'images/bloom_without_a_face.jpg', name:'Bloom Without a Face' },
+  { file:'images/sandy_constellations.jpg', name:'Sandy Constellations' },
+  { file:'images/divine_chaos.jpg',         name:'Divine Chaos' },
+  { file:'images/IMG_2072.JPG',             name:'Lotus Lake' },
+];
+
+const i18n = {
+  en: {
+    nav_gallery:"Gallery", nav_about:"About", nav_commission:"Commission",
+    menu_canvas:"Print on Canvas", menu_paper:"Print on Paper", menu_stickers:"Stickers",
+    sticker_tag:"NEW ✦", sticker_title:"STICKER PACKS",
+    sticker_sub:"10 exclusive Queer Lights stickers per pack · Premium vinyl · Worldwide shipping",
+    spec_count:"Stickers", spec_material:"Material", spec_resist:"Resistant", spec_ship:"Worldwide",
+    qty_label:"Quantity", per_pack:"/ pack of 10 stickers", order_stickers:"ORDER A PACK",
+    apply_code:"APPLY", subtotal:"Subtotal", total:"Total",
+    cart_empty:"Your cart is empty", added:"✓ Added to cart",
+    cart_label:"CART", type_sticker:"Sticker Pack",
+  },
+  fr: {
+    nav_gallery:"Galerie", nav_about:"À propos", nav_commission:"Commissions",
+    menu_canvas:"Impression sur Toile", menu_paper:"Impression sur Papier", menu_stickers:"Stickers",
+    sticker_tag:"NOUVEAU ✦", sticker_title:"PACKS STICKERS",
+    sticker_sub:"10 stickers exclusifs Queer Lights par pack · Vinyle premium · Livraison mondiale",
+    spec_count:"Stickers", spec_material:"Matière", spec_resist:"Résistant UV", spec_ship:"Mondial",
+    qty_label:"Quantité", per_pack:"/ pack de 10 stickers", order_stickers:"COMMANDER UN PACK",
+    apply_code:"APPLIQUER", subtotal:"Sous-total", total:"Total",
+    cart_empty:"Votre panier est vide", added:"✓ Ajouté au panier",
+    cart_label:"PANIER", type_sticker:"Pack Stickers",
+  }
+};
+
+let currentLang = localStorage.getItem('ql_lang') || 'en';
+let cart = JSON.parse(localStorage.getItem('ql_cart') || '[]');
+let stickerQty = 1;
+
+function buildGrid() {
+  const grid = document.getElementById('stickerGrid');
+  grid.innerHTML = PREVIEWS.map(p => `
+    <div class="ql-sticker-cell">
+      <img src="${p.file}" alt="${p.name}" loading="lazy">
+      <div class="ql-sticker-cell-label">${p.name}</div>
+    </div>`).join('');
+}
+
+function changeQty(d) {
+  stickerQty = Math.max(1, stickerQty + d);
+  document.getElementById('qtyVal').textContent = stickerQty;
+}
+
+function addStickers() {
+  const lang = currentLang;
+  addToCart({
+    type: 'sticker',
+    name: i18n[lang].sticker_title || 'Sticker Pack',
+    price: 30,
+    emoji: '✨',
+    typeLabel: i18n[lang].type_sticker,
+    qty: stickerQty,
+  });
+}
+
+function saveCart() { localStorage.setItem('ql_cart', JSON.stringify(cart)); }
+
+function addToCart(item) {
+  const qty = item.qty || 1;
+  const existing = cart.find(i => i.type === item.type);
+  if (existing) { existing.qty += qty; }
+  else { cart.push({ ...item, qty }); }
+  saveCart();
+  updateCartUI();
+  showToast(i18n[currentLang].added);
+  openCart();
+}
+
+function changeCartQty(idx, d) {
+  cart[idx].qty += d;
+  if (cart[idx].qty <= 0) cart.splice(idx, 1);
+  saveCart();
+  updateCartUI();
+}
+function removeFromCart(idx) {
+  cart.splice(idx, 1);
+  saveCart();
+  updateCartUI();
+}
+
+function updateCartUI() {
+  const lang = currentLang;
+  const count = cart.reduce((s, i) => s + i.qty, 0);
+  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+
+  const pill = document.getElementById('cartCount');
+  pill.textContent = count;
+  pill.style.display = count > 0 ? 'flex' : 'none';
+  document.getElementById('cartHeadTitle').textContent = (i18n[lang].cart_label || 'CART') + ' • ' + count;
+
+  const empty   = document.getElementById('cartEmpty');
+  const itemsEl = document.getElementById('cartItems');
+  const footer  = document.getElementById('cartFooter');
+
+  if (!cart.length) {
+    empty.style.display = 'block';
+    document.getElementById('cartEmptyText').textContent = i18n[lang].cart_empty;
+    itemsEl.innerHTML = '';
+    footer.style.display = 'none';
+    return;
+  }
+  empty.style.display = 'none';
+  footer.style.display = 'block';
+
+  itemsEl.innerHTML = cart.map((item, idx) => {
+    const thumbHtml = item.imgSrc
+      ? `<div class="ql-cart-item-thumb"><img src="${item.imgSrc}" alt="${item.name}"></div>`
+      : `<div class="ql-cart-item-thumb-emoji">${item.emoji || '✦'}</div>`;
+    return `
+      <div class="ql-cart-item">
+        ${thumbHtml}
+        <div class="ql-cart-item-info">
+          <div class="ql-cart-item-type">${item.typeLabel || ''}</div>
+          <div class="ql-cart-item-name">${item.name}</div>
+          <div class="ql-cart-item-price">€${item.price * item.qty}</div>
+          <div class="ql-cart-item-qty-row">
+            <button class="ql-cqty-btn" onclick="changeCartQty(${idx},-1)">−</button>
+            <span class="ql-cqty-val">${item.qty}</span>
+            <button class="ql-cqty-btn" onclick="changeCartQty(${idx},1)">+</button>
+          </div>
+        </div>
+        <button class="ql-cart-item-remove" onclick="removeFromCart(${idx})">×</button>
+      </div>`;
+  }).join('');
+
+  document.getElementById('cartSubtotal').textContent = '€' + total;
+  document.getElementById('cartTotal').textContent = '€' + total;
+  document.getElementById('checkoutTotal').textContent = '€' + total;
+}
+
+function toggleBurger() {
+  document.getElementById('burgerDropdown').classList.toggle('open');
+}
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.ql-burger-wrap')) {
+    document.getElementById('burgerDropdown').classList.remove('open');
+  }
+});
+
+function openCart() {
+  document.getElementById('cartDrawer').classList.add('open');
+  document.getElementById('cartOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeCart() {
+  document.getElementById('cartDrawer').classList.remove('open');
+  document.getElementById('cartOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+function applyDiscount() {
+  const code = document.getElementById('discountInput').value.trim().toUpperCase();
+  showToast(code === 'QUEER10' ? '✓ -10% applied!' : 'Invalid code');
+}
+
+function checkout(method) {
+  if (!cart.length) return;
+  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  if (method === 'paypal') {
+    window.open('https://paypal.me/kamion45/' + total + 'EUR', '_blank');
+    closeCart();
+  } else { showToast('→ Stripe coming soon...'); }
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.getElementById('btn-fr').classList.toggle('active', lang === 'fr');
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (i18n[lang][key] !== undefined) el.textContent = i18n[lang][key];
+  });
+  localStorage.setItem('ql_lang', lang);
+  updateCartUI();
+}
+
+buildGrid();
+setLang(currentLang);
+</script>
+</body>
+</html>

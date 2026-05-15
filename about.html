@@ -14,6 +14,14 @@ body{background:#000;color:#fff;font-family:'DM Sans',sans-serif;}
 .nav-links{display:flex;gap:20px;font-size:13px;color:rgba(255,255,255,.7)}
 .nav-links a{color:inherit;text-decoration:none;cursor:pointer;transition:color .2s}
 .nav-links a:hover{color:#fff}
+.ql-burger-wrap{position:relative;display:flex;align-items:center}
+.ql-burger-btn{background:none;border:1.5px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 10px;cursor:pointer;color:#fff;font-size:18px;line-height:1;transition:border-color .2s}
+.ql-burger-btn:hover{border-color:rgba(255,255,255,.5)}
+.ql-burger-dropdown{display:none;position:absolute;top:calc(100% + 10px);right:0;background:#111;border:1px solid #222;border-radius:12px;min-width:180px;overflow:hidden;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.6)}
+.ql-burger-dropdown.open{display:block}
+.ql-burger-dropdown a{display:block;padding:13px 18px;font-size:13px;font-weight:500;color:#ccc;text-decoration:none;letter-spacing:.5px;transition:background .15s,color .15s;border-bottom:1px solid #1a1a1a}
+.ql-burger-dropdown a:last-child{border-bottom:none}
+.ql-burger-dropdown a:hover{background:#1a1a1a;color:#fff}
 .cart-btn{width:34px;height:34px;border:1.5px solid #00ff9d;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#00ff9d;font-size:15px}
 .lang-switcher{display:flex;align-items:center;gap:2px;background:#111;border:1px solid #222;border-radius:20px;padding:3px}
 .lang-btn{padding:4px 10px;border-radius:16px;font-size:11px;font-weight:500;cursor:pointer;border:none;background:transparent;color:#666;font-family:'DM Sans',sans-serif;transition:all .2s;display:flex;align-items:center;gap:4px}
@@ -76,9 +84,17 @@ body{background:#000;color:#fff;font-family:'DM Sans',sans-serif;}
   <div class="logo" onclick="window.location='home.html'">QUEER<br>LIGHTS</div>
   <div class="nav-right">
     <div class="nav-links">
+      <div class="ql-burger-wrap">
+        <button class="ql-burger-btn" onclick="toggleBurger()">☰</button>
+        <div class="ql-burger-dropdown" id="burgerDropdown">
+          <a href="gallery.html" data-i18n="menu_canvas">Print on Canvas</a>
+          <a href="paper.html" data-i18n="menu_paper">Print on Paper</a>
+          <a href="stickers.html" data-i18n="menu_stickers">Stickers</a>
+        </div>
+      </div>
       <a href="gallery.html" data-i18n="nav_gallery">Gallery</a>
-      <a href="about.html" data-i18n="nav_about">About</a>
       <a href="commission.html" data-i18n="nav_commission">Commission</a>
+      <a href="about.html" data-i18n="nav_about">About</a>
     </div>
     <div class="cart-btn">🛒</div>
     <div class="lang-switcher">
@@ -161,6 +177,7 @@ body{background:#000;color:#fff;font-family:'DM Sans',sans-serif;}
 const i18n = {
   en: {
     nav_gallery:"Gallery", nav_about:"About", nav_commission:"Commission",
+    menu_canvas:"Print on Canvas", menu_paper:"Print on Paper", menu_stickers:"Stickers",
     hero_tag:"The artist behind Queer Lights",
     hero_tagline:"Bold. Provocative.\nUnapologetically Queer.",
     bio1:"Kamion Fox is a Paris-based digital collagiste working at the intersection of pop art, queer identity, and raw desire. Each piece is built by layering AI-generated characters with found digital fragments — vintage textures, neon glitches, unexpected icons — colliding until something new and electric emerges.",
@@ -179,6 +196,7 @@ const i18n = {
   },
   fr: {
     nav_gallery:"Galerie", nav_about:"À propos", nav_commission:"Commissions",
+    menu_canvas:"Impression sur Toile", menu_paper:"Impression sur Papier", menu_stickers:"Stickers",
     hero_tag:"L'artiste derrière Queer Lights",
     hero_tagline:"Audacieux. Provocateur.\nFièrement Queer.",
     bio1:"Kamion Fox est un collagiste numérique parisien qui travaille à l'intersection du pop art, de l'identité queer et du désir brut. Chaque pièce est construite en superposant des personnages générés par IA avec des fragments numériques trouvés — textures vintage, glitches néon, icônes inattendues — jusqu'à ce que quelque chose de nouveau et d'électrique émerge.",
@@ -198,6 +216,15 @@ const i18n = {
 };
 
 const savedLang = localStorage.getItem('ql_lang') || 'en';
+
+function toggleBurger() {
+  document.getElementById('burgerDropdown').classList.toggle('open');
+}
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.ql-burger-wrap')) {
+    document.getElementById('burgerDropdown').classList.remove('open');
+  }
+});
 
 function setLang(lang) {
   document.getElementById('btn-en').classList.toggle('active', lang==='en');

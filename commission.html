@@ -27,6 +27,16 @@ html{scroll-behavior:smooth}
 .lang-btn{padding:4px 10px;border-radius:16px;font-size:11px;font-weight:500;cursor:pointer;border:none;background:transparent;color:#666;font-family:'DM Sans',sans-serif;transition:all .2s}
 .lang-btn.active{background:linear-gradient(90deg,var(--pink),var(--purple));color:#fff}
 
+/* BURGER SHOP MENU */
+.ql-burger-wrap{position:relative;display:flex;align-items:center}
+.ql-burger-btn{background:none;border:1.5px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 10px;cursor:pointer;color:#fff;font-size:18px;line-height:1;transition:border-color .2s}
+.ql-burger-btn:hover{border-color:rgba(255,255,255,.5)}
+.ql-burger-dropdown{display:none;position:absolute;top:calc(100% + 10px);right:0;background:#111;border:1px solid #222;border-radius:12px;min-width:180px;overflow:hidden;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.6)}
+.ql-burger-dropdown.open{display:block}
+.ql-burger-dropdown a{display:block;padding:13px 18px;font-size:13px;font-weight:500;color:#ccc;text-decoration:none;letter-spacing:.5px;transition:background .15s,color .15s;border-bottom:1px solid #1a1a1a}
+.ql-burger-dropdown a:last-child{border-bottom:none}
+.ql-burger-dropdown a:hover{background:#1a1a1a;color:#fff}
+
 /* HEADER */
 .ql-commission-header{padding:40px 20px 16px;background:linear-gradient(180deg,#0a0010 0%,#000 100%);text-align:center}
 .ql-section-title{font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:2px;margin:0}
@@ -211,9 +221,17 @@ html{scroll-behavior:smooth}
     <div class="ql-logo" onclick="window.location='home.html'">QUEER<br>LIGHTS</div>
     <div class="nav-right">
       <div class="ql-nav-links">
+        <div class="ql-burger-wrap">
+          <button class="ql-burger-btn" onclick="toggleBurger()" id="burgerBtn">☰</button>
+          <div class="ql-burger-dropdown" id="burgerDropdown">
+            <a href="gallery.html" data-i18n="menu_canvas">Print on Canvas</a>
+            <a href="paper.html" data-i18n="menu_paper">Print on Paper</a>
+            <a href="stickers.html" data-i18n="menu_stickers">Stickers</a>
+          </div>
+        </div>
         <span data-i18n="nav_gallery" onclick="window.location='gallery.html'">Gallery</span>
-        <span data-i18n="nav_about" onclick="window.location='about.html'">About</span>
         <span data-i18n="nav_commission" onclick="window.location='commission.html'">Commission</span>
+        <span data-i18n="nav_about" onclick="window.location='about.html'">About</span>
       </div>
       <div class="ql-cart-btn" onclick="openCart()">
         <span>🛒</span>
@@ -247,111 +265,11 @@ html{scroll-behavior:smooth}
         <li data-i18n="f1_4">High-resolution digital file</li>
         <li data-i18n="f1_5">Exclusive ownership rights</li>
       </ul>
-      <button class="ql-pkg-btn" onclick="addToCart({type:'custom',name:'Custom Commission',price:350,emoji:'🎨'})" data-i18n="add_cart">ADD TO CART</button>
-    </div>
-    <div class="ql-package-card digital">
-      <span class="ql-badge" data-i18n="badge_digital">Digital</span>
-      <p class="ql-pkg-name" data-i18n="pkg3_name">Digital Collection</p>
-      <p class="ql-pkg-price">€100</p>
-      <p class="ql-pkg-desc" data-i18n="pkg3_desc">High-resolution digital art for personal use</p>
-      <ul class="ql-features">
-        <li data-i18n="f3_1">Instant download</li>
-        <li data-i18n="f3_2">4K resolution</li>
-        <li data-i18n="f3_3">Exclusive wallpapers</li>
-      </ul>
-      <button class="ql-pkg-btn" onclick="addToCart({type:'digital',name:'Digital Collection',price:100,emoji:'💻'})" data-i18n="add_cart">ADD TO CART</button>
+      <button class="ql-pkg-btn" onclick="document.getElementById('contactForm').scrollIntoView({behavior:'smooth'})" data-i18n="ask_artist">ASK THE ARTIST</button>
     </div>
   </div>
 
-  <!-- A4 PRINT SHOWCASE -->
-  <div class="ql-print-showcase">
-    <div class="ql-print-header">
-      <p class="ql-print-tag" data-i18n="print_tag">LIMITED EDITION ✦</p>
-      <p class="ql-print-title" data-i18n="print_title">A4 ART PRINTS</p>
-      <p class="ql-print-sub" data-i18n="print_sub">Fine art prints on exceptional paper · Signed &amp; numbered · 20 copies only</p>
-    </div>
 
-    <!-- CAROUSEL -->
-    <div class="ql-carousel-wrap">
-      <div class="ql-carousel" id="carousel">
-        <div class="ql-carousel-track" id="carouselTrack">
-          <!-- slides injected by JS -->
-        </div>
-      </div>
-      <button class="ql-car-prev" onclick="carMove(-1)">‹</button>
-      <button class="ql-car-next" onclick="carMove(1)">›</button>
-    </div>
-    <div class="ql-carousel-dots" id="carouselDots"></div>
-    <button class="ql-carousel-select-btn" onclick="addCurrentPrint()" data-i18n="select_print">✦ SELECT THIS PRINT</button>
-
-    <div class="ql-print-specs">
-      <div class="ql-print-spec">
-        <span class="ql-print-spec-val">A4</span>
-        <span class="ql-print-spec-key" data-i18n="spec_format">Format</span>
-      </div>
-      <div class="ql-print-spec">
-        <span class="ql-print-spec-val">20</span>
-        <span class="ql-print-spec-key" data-i18n="spec_copies">Copies</span>
-      </div>
-      <div class="ql-print-spec">
-        <span class="ql-print-spec-val">300</span>
-        <span class="ql-print-spec-key">DPI</span>
-      </div>
-      <div class="ql-print-spec">
-        <span class="ql-print-spec-val">✦</span>
-        <span class="ql-print-spec-key" data-i18n="spec_signed">Signed</span>
-      </div>
-    </div>
-
-    <div class="ql-print-paper">
-      <p class="ql-print-paper-title" data-i18n="paper_title">PAPER QUALITY</p>
-      <ul class="ql-print-paper-list">
-        <li data-i18n="paper_1">Hahnemühle Photo Rag 308g/m² — museum reference paper</li>
-        <li data-i18n="paper_2">Archival pigment giclée printing — 100+ year colour resistance</li>
-        <li data-i18n="paper_3">Ultra-smooth matte surface, zero glare</li>
-        <li data-i18n="paper_4">Natural warm white for exceptional black depth</li>
-        <li data-i18n="paper_5">Delivered in a rigid protective sleeve</li>
-      </ul>
-    </div>
-
-    <div class="ql-print-avail">
-      <div class="ql-print-avail-bar"><div class="ql-print-avail-fill"></div></div>
-      <span class="ql-print-avail-text" data-i18n="print_avail">3 / 20 sold</span>
-    </div>
-
-    <div class="ql-print-cta">
-      <div>
-        <span class="ql-print-price">€120</span>
-        <span class="ql-print-per" data-i18n="print_per">/ unique copy</span>
-      </div>
-      <button class="ql-print-btn" onclick="addCurrentPrint()" data-i18n="order_print">ORDER NOW</button>
-    </div>
-  </div>
-
-  <!-- STICKER SHOWCASE -->
-  <div class="ql-sticker-showcase">
-    <div class="ql-sticker-header">
-      <p class="ql-sticker-tag" data-i18n="sticker_tag">NEW ✦</p>
-      <p class="ql-sticker-title" data-i18n="sticker_title">STICKER PACKS</p>
-      <p class="ql-sticker-sub" data-i18n="sticker_sub">10 exclusive Queer Lights stickers per pack · Premium vinyl · Worldwide shipping</p>
-    </div>
-    <div class="ql-sticker-grid" id="stickerGrid">
-      <!-- injected by JS -->
-    </div>
-    <div class="ql-qty">
-      <span class="ql-qty-label" data-i18n="qty">Qty</span>
-      <button class="ql-qty-btn" onclick="changeQty(-1)">−</button>
-      <span class="ql-qty-val" id="qtyVal">1</span>
-      <button class="ql-qty-btn" onclick="changeQty(1)">+</button>
-    </div>
-    <div class="ql-sticker-cta">
-      <div>
-        <span class="ql-sticker-price">€30</span>
-        <span class="ql-sticker-per" data-i18n="per_pack">/ pack of 10 stickers</span>
-      </div>
-      <button class="ql-sticker-btn" onclick="addStickers()" data-i18n="order_stickers">ORDER A PACK</button>
-    </div>
-  </div>
 
   <hr class="ql-divider">
 
@@ -376,7 +294,6 @@ html{scroll-behavior:smooth}
             <option data-i18n="opt_commission">Custom commission inquiry</option>
             <option data-i18n="opt_print">A4 limited edition print</option>
             <option data-i18n="opt_digital">Digital collection</option>
-            <option data-i18n="opt_sticker">Sticker pack</option>
             <option data-i18n="opt_general">General question</option>
           </select>
         </div>
@@ -465,7 +382,8 @@ const i18n = {
     f1_1:"One-on-one consultation", f1_2:"Custom size and medium", f1_3:"3 revision rounds",
     f1_4:"High-resolution digital file", f1_5:"Exclusive ownership rights",
     f3_1:"Instant download", f3_2:"4K resolution", f3_3:"Exclusive wallpapers",
-    add_cart:"ADD TO CART", qty:"Qty",
+    add_cart:"ADD TO CART", ask_artist:"ASK THE ARTIST", qty:"Qty",
+    menu_canvas:"Print on Canvas", menu_paper:"Print on Paper", menu_stickers:"Stickers",
     print_tag:"LIMITED EDITION ✦", print_title:"A4 ART PRINTS",
     print_sub:"Fine art prints on exceptional paper · Signed & numbered · 20 copies only",
     spec_format:"Format", spec_copies:"Copies", spec_signed:"Signed",
@@ -502,7 +420,8 @@ const i18n = {
     f1_1:"Consultation individuelle", f1_2:"Format et médium personnalisés", f1_3:"3 rounds de révisions",
     f1_4:"Fichier numérique haute résolution", f1_5:"Droits de propriété exclusifs",
     f3_1:"Téléchargement immédiat", f3_2:"Résolution 4K", f3_3:"Fonds d'écran exclusifs",
-    add_cart:"AJOUTER AU PANIER", qty:"Qté",
+    add_cart:"AJOUTER AU PANIER", ask_artist:"CONTACTER L'ARTISTE", qty:"Qté",
+    menu_canvas:"Impression sur Toile", menu_paper:"Impression sur Papier", menu_stickers:"Stickers",
     print_tag:"ÉDITION LIMITÉE ✦", print_title:"TIRAGES A4",
     print_sub:"Tirages d'art sur papier d'exception · Signés & numérotés · 20 exemplaires seulement",
     spec_format:"Format", spec_copies:"Exemplaires", spec_signed:"Signé",
@@ -534,76 +453,6 @@ const i18n = {
 
 let currentLang = localStorage.getItem('ql_lang') || 'en';
 let cart = JSON.parse(localStorage.getItem('ql_cart') || '[]');
-let stickerQty = 1;
-let carIdx = 0;
-
-/* ── Build carousel ── */
-function buildCarousel() {
-  const track = document.getElementById('carouselTrack');
-  const dots = document.getElementById('carouselDots');
-  track.innerHTML = '';
-  dots.innerHTML = '';
-  COLLAGES.forEach((c, i) => {
-    const slide = document.createElement('div');
-    slide.className = 'ql-carousel-slide';
-    slide.innerHTML = `
-      <img src="${c.file}" alt="${c.name}" loading="lazy" onclick="openLightbox(${i})">
-      <div class="ql-carousel-slide-caption">${c.name}</div>`;
-    track.appendChild(slide);
-    const dot = document.createElement('button');
-    dot.className = 'ql-dot' + (i === 0 ? ' active' : '');
-    dot.onclick = () => carGo(i);
-    dots.appendChild(dot);
-  });
-}
-
-function carGo(idx) {
-  carIdx = (idx + COLLAGES.length) % COLLAGES.length;
-  document.getElementById('carouselTrack').style.transform = `translateX(-${carIdx * 100}%)`;
-  document.querySelectorAll('.ql-dot').forEach((d, i) => d.classList.toggle('active', i === carIdx));
-}
-function carMove(d) { carGo(carIdx + d); }
-
-/* ── Build sticker grid (first 4 collages) ── */
-function buildStickerGrid() {
-  const grid = document.getElementById('stickerGrid');
-  grid.innerHTML = '';
-  COLLAGES.slice(0, 4).forEach((c, i) => {
-    const cell = document.createElement('div');
-    cell.className = 'ql-sticker-cell';
-    cell.innerHTML = `
-      <img src="${c.file}" alt="${c.name}" loading="lazy">
-      <div class="ql-sticker-cell-overlay"></div>`;
-    grid.appendChild(cell);
-  });
-}
-
-/* ── Add current carousel print to cart ── */
-function addCurrentPrint() {
-  const c = COLLAGES[carIdx];
-  const lang = currentLang;
-  addToCart({
-    type: 'print_' + c.id,
-    name: 'A4 Print — ' + c.name,
-    price: 120,
-    imgSrc: c.file,
-    typeLabel: i18n[lang].type_print,
-  });
-}
-
-/* ── Add stickers ── */
-function addStickers() {
-  const lang = currentLang;
-  addToCart({
-    type: 'sticker',
-    name: i18n[lang].sticker_title || 'Sticker Pack',
-    price: 30,
-    emoji: '✨',
-    typeLabel: i18n[lang].type_sticker,
-    qty: stickerQty,
-  });
-}
-
 function saveCart() { localStorage.setItem('ql_cart', JSON.stringify(cart)); }
 
 /* ── Core cart ── */
@@ -681,6 +530,15 @@ function updateCartUI() {
 }
 
 /* ── Cart open/close ── */
+function toggleBurger() {
+  document.getElementById('burgerDropdown').classList.toggle('open');
+}
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.ql-burger-wrap')) {
+    document.getElementById('burgerDropdown').classList.remove('open');
+  }
+});
+
 function openCart() {
   document.getElementById('cartDrawer').classList.add('open');
   document.getElementById('cartOverlay').classList.add('open');
@@ -707,8 +565,6 @@ function closeLightbox() {
 
 /* ── Misc ── */
 function changeQty(d) {
-  stickerQty = Math.max(1, stickerQty + d);
-  document.getElementById('qtyVal').textContent = stickerQty;
 }
 function showToast(msg) {
   const t = document.getElementById('toast');
@@ -755,8 +611,6 @@ function setLang(lang) {
 }
 
 /* ── Init ── */
-buildCarousel();
-buildStickerGrid();
 setLang(currentLang);
 </script>
 </body>
