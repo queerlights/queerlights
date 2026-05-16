@@ -27,11 +27,17 @@ body{background:#000;color:#fff;font-family:'DM Sans',sans-serif;overflow-x:hidd
 .lang-btn{padding:4px 10px;border-radius:16px;font-size:11px;font-weight:500;cursor:pointer;border:none;background:transparent;color:rgba(255,255,255,.5);font-family:'DM Sans',sans-serif;transition:all .2s;display:flex;align-items:center;gap:4px}
 .lang-btn.active{background:linear-gradient(90deg,#ff0080,#a855f7);color:#fff}
 .lang-flag{font-size:13px}
+@media(max-width:767px){
+  .nav-links>a{display:none}
+  .lang-btn{padding:3px 7px;font-size:10px}
+  .lang-flag{font-size:11px}
+}
 
 .hero{height:100vh;height:calc(var(--vh,1vh)*100);position:relative;overflow:hidden}
 .slides{display:flex;height:100%;width:100%;transition:transform .9s cubic-bezier(.77,0,.175,1)}
 .slide{flex:0 0 100%;width:100%;height:100%;position:relative;display:flex;align-items:flex-end}
-.slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%}
+.slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center}
+@media(min-width:768px){.slide img{object-fit:contain;object-position:center center}}
 .slide-grad{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.88) 0%,rgba(0,0,0,.35) 45%,rgba(0,0,0,.1) 100%)}
 /* Desktop : texte centré en bas à gauche, plus grand */
 @media(min-width:768px){
@@ -79,6 +85,7 @@ body{background:#000;color:#fff;font-family:'DM Sans',sans-serif;overflow-x:hidd
 .commission-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;background:linear-gradient(90deg,#ff0080,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
 .commission-sub{font-size:13px;color:#777;margin-bottom:22px;line-height:1.6}
 .price-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:22px}
+@media(max-width:480px){.price-row{grid-template-columns:repeat(2,1fr)}}
 .price-pill{text-align:center;padding:12px 6px;border-radius:12px;border:1px solid}
 .p1{border-color:rgba(168,85,247,.3);background:rgba(168,85,247,.08)}
 .p2{border-color:rgba(0,200,255,.3);background:rgba(0,200,255,.08)}
@@ -139,7 +146,7 @@ body{background:#000;color:#fff;font-family:'DM Sans',sans-serif;overflow-x:hidd
 .ql-checkout-btn:hover{opacity:.85}
 .cart-btn{position:relative}
 .ql-cart-badge{position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,#ff0080,#a855f7);color:#fff;font-size:10px;font-weight:600;display:none;align-items:center;justify-content:center;font-family:'DM Sans',sans-serif;pointer-events:none}
-.ql-toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:#0a0010;border:1px solid #2a1040;border-radius:30px;padding:10px 22px;font-size:13px;color:#00ff9d;opacity:0;transition:all .3s;z-index:1100;white-space:nowrap;pointer-events:none;font-family:'DM Sans',sans-serif}
+.ql-toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:#0a0010;border:1px solid #2a1040;border-radius:30px;padding:10px 22px;font-size:13px;color:#00ff9d;opacity:0;transition:all .3s;z-index:1100;white-space:nowrap;pointer-events:none;font-family:'DM Sans',sans-serif;max-width:calc(100vw - 40px)}
 .ql-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
 </head>
@@ -172,7 +179,7 @@ body{background:#000;color:#fff;font-family:'DM Sans',sans-serif;overflow-x:hidd
 <section class="hero">
   <div class="slides" id="slides">
     <div class="slide">
-      <img src="images/bloom_without_a_face.jpg" alt="Bloom Without a Face" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%">
+      <img src="images/bloom_without_a_face.jpg" alt="Bloom Without a Face" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
       <div class="slide-grad"></div>
       <div class="slide-content">
         <p class="slide-tag" style="color:#ff6eb4;" data-i18n="slide1_tag">Surreal Pop Art · €250</p>
@@ -182,25 +189,27 @@ body{background:#000;color:#fff;font-family:'DM Sans',sans-serif;overflow-x:hidd
       </div>
     </div>
     <div class="slide">
-      <img src="images/sandy_constellations.jpg" alt="Sandy Constellations" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%">
+      <img src="images/sandy_constellations.jpg" alt="Sandy Constellations" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
       <div class="slide-grad"></div>
       <div class="slide-content">
         <p class="slide-tag" style="color:#ccc;" data-i18n="slide2_tag">Limited Edition · €250</p>
         <h1 class="slide-title" style="color:#fff;">Sandy<br>Constellations</h1>
         <p class="slide-sub" data-i18n="slide2_sub">Museum-grade collage · Only 10 prints</p>
       <button class="slide-btn" style="background:linear-gradient(90deg,#ff0080,#ec4899);color:#fff;" onclick="addToCart('sandy')" data-i18n="get_print">Get This Print</button>
+      </div>
     </div>
     <div class="slide">
-      <img src="images/divine_chaos.jpg" alt="Divine Chaos" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%">
+      <img src="images/divine_chaos.jpg" alt="Divine Chaos" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
       <div class="slide-grad"></div>
       <div class="slide-content">
         <p class="slide-tag" style="color:#c084fc;" data-i18n="slide3_tag">Sacred & Queer · €250</p>
         <h1 class="slide-title" style="background:linear-gradient(90deg,#c084fc,#00c8ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Divine<br>Chaos</h1>
         <p class="slide-sub" data-i18n="slide3_sub">Spirituality meets desire &middot; Signed print</p>
         <button class="slide-btn" style="background:linear-gradient(90deg,#ff0080,#ec4899);color:#fff;" onclick="addToCart('divine')" data-i18n="get_print">Get This Print</button>
+      </div>
     </div>
     <div class="slide">
-      <img src="images/IMG_2072.JPG" alt="Lotus Lake" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%">
+      <img src="images/IMG_2072.JPG" alt="Lotus Lake" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
       <div class="slide-grad"></div>
       <div class="slide-content">
         <p class="slide-tag" style="color:#00ff9d;" data-i18n="slide4_tag">Limited Edition · €250</p>
